@@ -1,0 +1,99 @@
+
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+
+<title>Spring Boot AngularJS Credit Card</title>
+<script type="text/javascript">
+            var app = angular.module("CreditMgmt", []);
+         
+            
+            app.controller("CreditController", function($scope, $http) {
+         
+               
+                $scope.user = [];
+                $scope.creditForm = {
+                    creditcardno : "",
+                    expdate:"",
+                    cvv : "",
+                    address : "",
+                 
+                };
+         
+               
+                $scope.submitCreditInfo = function() {
+         
+                    var method = "POST";
+                    var url = "/addcreditcard";
+                   
+                    $http({
+                        method : method,
+                        url : url,
+                        data : angular.toJson($scope.creditForm),
+                        headers : {
+                            'Content-Type' : 'application/json'
+                        }
+                    }).then( _success, _error );
+                };
+         
+               
+         
+         
+                function _success(response)
+                {
+                    _clearFormData()
+                }
+         
+                function _error(response) {
+                    console.log(response.statusText);
+                }
+         
+                //Clear the form
+                function _clearFormData() {
+                    $scope.creditForm.creditcardno  = "";
+                    $scope.creditForm.expdate = "";
+                    $scope.creditForm.cvv = "";
+                    $scope.creditForm.address  = "";
+                
+                };
+            });
+        </script>
+
+<head>
+<body ng-app="CreditMgmt" ng-controller="CreditController">
+	<h1>Credit Card Informaton</h1>
+	<form ng-submit="submitCreditInfo()">
+		<table>
+
+			<tr>
+				<td>Credit Card Number</td>
+				<td><input type="text" ng-model="creditForm.creditcardno" /></td>
+			</tr>
+			
+			<tr>
+				<td>Expiry Date</td>
+				<td><input type="text" ng-model="creditForm.expdate" /></td>
+			</tr>
+			
+			
+			<tr>
+				<td>CVV</td>
+				<td><input type="text" ng-model="creditForm.cvv" /></td>
+			</tr>
+			
+			<tr>
+				<td>Payment Address</td>
+				<td><input type="text" ng-model="creditForm.address" /></td>
+			</tr>
+			
+			
+			<tr>
+				<td colspan="2"><input type="submit" value="Submit"
+					class="blue-button" /></td>
+			</tr>
+		</table>
+	</form>
+	
+</body>
+</html>

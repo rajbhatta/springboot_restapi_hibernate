@@ -1,0 +1,89 @@
+
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+
+<title>Spring Boot AngularJS User</title>
+<script type="text/javascript">
+            var app = angular.module("UserManagement", []);
+         
+            
+            app.controller("UserController", function($scope, $http) {
+         
+               
+                $scope.user = [];
+                $scope.userForm = {
+                    name : "",
+                    address: "",
+                    email : ""
+                    
+                };
+         
+               
+                $scope.submitUser = function() {
+         
+                    var method = "POST";
+                    var url = "/adduser";
+                   
+                    $http({
+                        method : method,
+                        url : url,
+                        data : angular.toJson($scope.userForm),
+                        headers : {
+                            'Content-Type' : 'application/json'
+                        }
+                    }).then( _success, _error );
+                };
+         
+               
+         
+         
+                function _success(response)
+                {
+                    _clearFormData()
+                }
+         
+                function _error(response) {
+                    console.log(response.statusText);
+                }
+         
+                //Clear the form
+                function _clearFormData() {
+                    $scope.userForm.name = "";
+                    $scope.userForm.email = "";
+                    $scope.userForm.address = "";
+                
+                };
+            });
+        </script>
+
+<head>
+<body ng-app="UserManagement" ng-controller="UserController">
+	<h1>Add User</h1>
+	<form ng-submit="submitUser()">
+		<table>
+			<tr>
+				<td>User Name</td>
+				<td><input type="text" ng-model="userForm.name" /></td>
+			</tr>
+			
+			<tr>
+				<td>User Address</td>
+				<td><input type="text" ng-model="userForm.address" /></td>
+			</tr>
+			
+			
+			<tr>
+				<td>User Email</td>
+				<td><input type="text" ng-model="userForm.email" /></td>
+			</tr>
+			<tr>
+				<td colspan="2"><input type="submit" value="Submit"
+					class="blue-button" /></td>
+			</tr>
+		</table>
+	</form>
+	
+</body>
+</html>
