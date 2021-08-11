@@ -1,15 +1,14 @@
 package com.raj.springapp;
 
-import static org.hamcrest.CoreMatchers.any;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.raj.springapp.exception.UserDaoException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.raj.springapp.dao.UserDao;
-import com.raj.springapp.model.CreditCard;
-import com.raj.springapp.model.User;
-import com.raj.springapp.service.CreditCardService;
+import com.raj.springapp.dao.DaoService;
+import com.raj.springapp.modal.CreditCard;
+import com.raj.springapp.modal.User;
+import com.raj.springapp.service.CardService;
 import com.raj.springapp.service.UserService;
 
 @RunWith(SpringRunner.class)
@@ -47,10 +46,10 @@ public class SpringAppApplicationTests
 	private UserService userService;
 	
 	@Autowired
-	private CreditCardService creditCardService;
+	private CardService creditCardService;
 	
 	@MockBean
-	private UserDao userDao;
+	private DaoService userDao;
 	
 	
 	@Test
@@ -67,8 +66,8 @@ public class SpringAppApplicationTests
 	@Test
 	public void getAllUserTestAlternative()
 	{
-		when(userDao.getUserList()).thenReturn(Stream.of(new User("raj","10 Barrymore Road","raj@gmail.com"),new User("raj","10 Barrymore Road","raj@gmail.com")).collect(Collectors.toList()));
-		assertEquals(2,userService.getUserList().size());
+		when(userDao.getList()).thenReturn(Stream.of(new User("raj","10 Barrymore Road","raj@gmail.com"),new User("raj","10 Barrymore Road","raj@gmail.com")).collect(Collectors.toList()));
+		assertEquals(2,userService.getList().size());
 	}
 	
 
@@ -80,15 +79,14 @@ public class SpringAppApplicationTests
 	}
 	
 	@Test
-	public void saveUserTest()
-	{
+	public void saveUserTest() throws UserDaoException {
 		User user=new User("raj","10 Barrymore Road","raj@gmail.com");
 		
 //		userService.saveUser(user);
 //		verify(userDao, times(0)).saveUser(user);
 		
-		when(userDao.saveUser(user)).thenReturn(true);
-		assertEquals(user, userService.saveUser(user));
+		when(userDao.save(user)).thenReturn(true);
+		assertEquals(user, userService.save(user));
 	}
 
 
