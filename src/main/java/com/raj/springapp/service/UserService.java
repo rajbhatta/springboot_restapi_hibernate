@@ -2,13 +2,14 @@ package com.raj.springapp.service;
 
 import java.util.List;
 
-import com.raj.springapp.model.User;
+import com.raj.springapp.exception.UserDaoException;
+import com.raj.springapp.modal.User;
 
-public interface UserService {
+public interface UserService<T> {
 
-	boolean saveUser(User user);
-	User getUser(int id);
-	void deleteUser(int id);
-	List<User> getUserList();
+	boolean save(T t) throws UserDaoException;
+	User get(int id);
+	void delete(int id);
+	List<User> getList();
 	
 }
